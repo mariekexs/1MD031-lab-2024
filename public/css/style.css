@@ -1,64 +1,190 @@
 @import url('https://fonts.googleapis.com/css2?family=Agbalumo&family=Cormorant:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Pacifico|Dosis');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+/* GENERAL STYLING */
+
 body {
-    font-size: 12pt;
-}
+    font-family: Kanit,  arial;
+    font-size: 16pt;
+ }
 
-p {
-    color: red;
-}
+/*set background for header*/
 
-h1 {
-    font-family: 'Agbalumo';
-    font-size: 36pt;
-}
-main, header, footer, nav ul {
-    max-width: 40rem;
-    margin: 0 auto 0 auto;
-}
-main {
-    background-color: bisque;
-}
+ header {
+    margin: 2px;
 
-/* nav ul li {
-    display: inline-block;
-    background-color: grey;
-    padding: 1em;
-    margin: 1em;
-} */
-
-header {
-    background-image: url("../img/polacks.jpg");
+    background-image: url("/Users/mariekexs/Documents/GranssnittLAB1/1MD031-lab-2024/public/img/burgerheavenhead3.jpg");
     background-size: cover;
+    background-position: center top; /* Positions the image's center at the top */
+
     overflow: hidden;
-    width: 100%;
-    height: 200px;
-    opacity: 0.5;
+    
+    height: 300px;
+    opacity: 0.95;
 }
 
-header h1 {
-    width:40rem;
-    margin: 0 auto;
+
+/* Centering and styling the header text */
+#part_welcomeburgeronline {
+    display: flex;
+    flex-direction: column; /* Stacks the <h1> and <p> vertically */
+    justify-content: center; /* Centers content vertically */
+    align-items: center; /* Centers content horizontally */
+
+    /*height: 100%;  Ensures it takes up the entire height of the header */
     text-align: center;
+    color: white; /* Adjust text color for contrast against the background */
+    padding: 0 20px; /* Optional: some padding for spacing */
 }
 
-nav ul {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 9.25em);
-    gap: 1em;
-    padding: 0;
+/* Style adjustments for header text */
+#part_welcomeburgeronline h1 {
+    font-size: 40pt; /* Increases font size of the title */
+    margin: 0; /* Removes default margin */
+    text-shadow: /* adds outline to the text*/
+    -3px -3px 0 #000, /* Top-left shadow */
+     3px -3px 0 #000, /* Top-right shadow */
+    -3px  3px 0 #000, /* Bottom-left shadow */
+     3px  3px 0 #000; /* Bottom-right shadow */
 }
 
-nav li {
-    display: block;
-    background-color: grey;
-    padding: 1em;
-}
-
-.Very-good {
-    color: green;
-}
-
-.Master {
-    color: green;
+#part_welcomeburgeronline p {
+    font-size: 18pt; /* Adjust font size of the paragraph */
+    margin-top: 10px; /* Adds spacing below the <h1> */
     font-weight: bold;
+    text-shadow: /* adds outline to the text*/
+    -1px -1px 0 #000, /* Top-left shadow */
+     1px -1px 0 #000, /* Top-right shadow */
+    -1px  1px 0 #000, /* Bottom-left shadow */
+     1px  1px 0 #000; /* Bottom-right shadow */
 }
+
+
+
+
+
+/* STYLING SECTIONS */
+
+/* set margin for every type scetion */
+section {
+    margin: 80px 60px;
+}
+
+#part_orderburger {
+    padding: 20px; /* Adds space inside each burger option */
+    border: 2px dotted #a33600;
+    border-radius: 30px; /* Rounds the corners of border for a softer look */
+    border-width: 15px;
+}
+
+
+#part_costumerinformation {
+    padding: 40px 80px; /* Adds space inside rectangle */
+    border: 4px double #d05111; /* Adds a border to better see the padding */
+    border-radius: 30px; /* Rounds the corners of border for a softer look */
+    border-width: 15px;
+}
+
+
+
+/* FIRST SECTION - BURGER OPTIONS */
+
+/* Ingredienser storlek, typ och färg*/
+
+ .ingredient {
+    color: #632100;
+ }
+ 
+    #glutenfri {
+        font-weight: bold;
+        color: #c3490c;
+        font-size: 12 pt;
+    }
+    #mjolkfri {
+        font-weight: bold;
+        color: #c3490c;
+        font-size: 12 pt;
+    }
+    #vegetarisk {
+        font-weight: bold;
+        color: #008b15;
+        font-size: 12 pt;
+    }
+
+
+/* set backround and text color for costumer infromation */
+
+#part_costumerinformation {
+    color: #ffefcc;
+    background-color: #632100;
+
+}
+
+
+#div_costumerinformation {
+    margin: 10px;
+}
+
+
+/* HAMBURGARALTERNATIVEN BILDER PLACERING - FÖRSÖK FÅ DE ATT VARA PÅ SAMMA RAD */
+
+
+/* Flex container for all burger options */
+#div_allburgers {
+    display: flex;
+    gap: 70px; /* Space between each burger */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Align items vertically */
+    margin: 15px auto;
+}
+
+/* Styling for each individual burger */
+.burger_option {
+    width: 180px; /* Ensure all burgers are the same width */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content within each burger div */
+
+    padding: 20px; /* Adds space inside each burger option */
+    border: 4px solid #a33600; /* Adds a border to better see the padding */
+    border-radius: 30px; /* Rounds the corners of border for a softer look */
+}
+
+.burger_option img {
+    width: 180px; /* Set consistent image size */
+    height: 150px;
+}
+
+
+
+
+/* LAST SECTION - BUTTON */
+
+#part_button {
+    display: flex;
+    justify-content: center; /* Centers the button horizontally */
+    align-items: center; /* Centers vertically if needed */
+    padding: 20px;
+    width: 100%; /* Makes sure the container spans the full width */
+}
+
+
+/* change hover of button */
+
+button:hover {
+    background-color:#1f53e2;
+    transition: 0.7s;       /* make transition smoother, does not work on mobile apps */
+
+    cursor:pointer;
+
+ }
+
+
+ /* set size radiobuttons */
+ input[type="radio"] {
+    height: .9em;
+    width: .9em;
+}
+
