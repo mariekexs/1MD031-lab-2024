@@ -160,9 +160,6 @@ section {
     border-radius: 10px;
 }
 
-
-
-
 /* Positioning certain burgers to span multiple rows/columns */
 
 .meat {
@@ -175,6 +172,13 @@ section {
     grid-column: 3 / span 1;
 }
 
+/* Align the ingredients list to the left */
+.box ul {
+    padding: 0;
+    margin: 2em;
+    text-align: left;
+    width: 100%; /* Makes it span the full width of the box */
+}
 
 
 /* LAST SECTION - BUTTON */
@@ -184,7 +188,7 @@ section {
     justify-content: center; /* Centers the button horizontally */
     align-items: center; /* Centers vertically if needed */
     padding: 20px;
-    width: 100%; /* Makes sure the container spans the full width */
+    /*width: 100%; /* Makes sure the container spans the full width */
 }
 
 
