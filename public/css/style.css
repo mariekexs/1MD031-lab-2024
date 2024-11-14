@@ -188,7 +188,6 @@ section {
     justify-content: center; /* Centers the button horizontally */
     align-items: center; /* Centers vertically if needed */
     padding: 20px;
-    /*width: 100%; /* Makes sure the container spans the full width */
 }
 
 

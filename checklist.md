@@ -36,6 +36,6 @@ The style.css file contains:
 - [ x] Adds margins to the sections and the order button
 - [ x] Add a border to the two sections
 - [ x] Create a header that places an image behind the headline
-- [ ] Use a grid layout for the burger selection section
+- [ x] Use a grid layout for the burger selection section
 
 
