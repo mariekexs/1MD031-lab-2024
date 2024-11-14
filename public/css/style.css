@@ -128,8 +128,7 @@ section {
 }
 
 
-/* HAMBURGARALTERNATIVEN BILDER PLACERING - FÖRSÖK FÅ DE ATT VARA PÅ SAMMA RAD */
-
+/*HAMBURGGER OPTIONS STYLING*/
 
 /* Grid template for all burger options */
 
@@ -178,6 +177,29 @@ section {
     margin: 2em;
     text-align: left;
     width: 100%; /* Makes it span the full width of the box */
+}
+
+/* MIDDLE SECTION - COSTUMER INFORMATION */
+
+
+/* Change size of textboexes to be filled in */
+#div_costumerinformation input[type="text"],
+#div_costumerinformation input[type="email"],
+#div_costumerinformation input[type="number"] {
+    width: 250px;    /* Adjust width as desired */
+    height: 15px;    /* Adjust height as desired */
+    padding: 8px;   /* Add padding, gives a larger feel */
+    font-size: 14px; /* Fix font size for readability */
+    border-radius: 10px;
+}
+
+/* Change size of roll down meny for payment options */
+#recipient  {
+    width: 200px;
+    height: 40px;
+    padding: 8px;
+    font-size: 14px; /* Fix font size for readability */
+    border-radius: 10px;
 }
 
 
