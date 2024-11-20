@@ -7,7 +7,7 @@
 
 body {
     font-family: Kanit,  arial;
-    font-size: 16pt;
+    font-size: 14pt;
  }
 
 /*set background for header*/
@@ -51,14 +51,14 @@ body {
 }
 
 #part_welcomeburgeronline p {
-    font-size: 18pt; /* Adjust font size of the paragraph */
+    font-size: 24pt; /* Adjust font size of the paragraph */
     margin-top: 10px; /* Adds spacing below the <h1> */
     font-weight: bold;
     text-shadow: /* adds outline to the text*/
-    -1px -1px 0 #000, /* Top-left shadow */
-     1px -1px 0 #000, /* Top-right shadow */
-    -1px  1px 0 #000, /* Bottom-left shadow */
-     1px  1px 0 #000; /* Bottom-right shadow */
+    -2px -2px 0 #000, /* Top-left shadow */
+     2px -2px 0 #000, /* Top-right shadow */
+    -2px  2px 0 #000, /* Bottom-left shadow */
+     2px  2px 0 #000; /* Bottom-right shadow */
 }
 
 
@@ -91,10 +91,14 @@ section {
 
 /* FIRST SECTION - BURGER OPTIONS */
 
-/* Ingredienser storlek, typ och färg*/
+/* Ingredient size, type and color */
 
  .ingredient {
-    color: #632100;
+    color: #632100; /* Is set in box layout aswell, choose one*/
+ }
+
+ .headline_options {
+        font-size: 20pt;
  }
  
     #glutenfri {
@@ -143,8 +147,8 @@ section {
 
 /* Styling for each burger */
 .box {
-    background-color: #312b28dc;
-    color: #fff;
+    background-color: #ffe091;
+    color: #59291c;
     border-radius: 30px;
     padding: 10px;
     text-align: center;
