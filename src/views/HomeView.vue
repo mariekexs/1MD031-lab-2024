@@ -18,9 +18,12 @@
                         
                         <!-- Loop through the burgers array and pass each burger to the Burger component, updated for OneBurger -->
                       
-                        <Burger v-for="burger in burgers" :key="burger.name" :burger="burger" />
-                      </div>
-                    </section>
+                        <Burger v-for="burger in burgers" 
+                                v-bind:key="burger.name" 
+                                v-bind:burger="burger" 
+                                v-on:orderBurger="addToOrder($event)" />
+                    </div>
+            </section>
 
         <section id="part_costumerinformation"> 
             
@@ -50,7 +53,6 @@
                             <input type="number" id="number" v-model="customerInfo.housenumber" required="required" placeholder="Housenumber">
                         </p>
 
-                        <!-- textruta att fylla i -->
                         <p>
                             <label for="recipient">Choose payment option:</label><br>
                             <select id="recipient" v-model="customerInfo.paymentOpt">
@@ -62,56 +64,52 @@
                         </p>
 
                         <p> Choose your sex: </p> 
-                        <!-- Ge valalternativ ja nej att kryssa i -->
                         <label>
-                            <input type="radio" v-model="customerInfo.sex" value="yes" > Yes
+                            <input type="radio" v-model="customerInfo.sex" value="male" > Male
                         </label> <br>
                         <label>
-                            <input type="radio" v-model="customerInfo.sex" value="no"> No
+                            <input type="radio" v-model="customerInfo.sex" value="female"> Female
                         </label>
                         <label> <br>
                             <input type="radio" v-model="customerInfo.sex" value="wontsay" checked="checked"> Do not wish to provide
                         </label>
                       
                 </div>
-        </section>
 
+                <!-- map of city for placing orders -->
+                <div id="div_costumer_map">
+                    <div id="map" v-on:click="addOrder">
+                      
+               <!-- The v-if="location.x && location.y" ensures the dot is only rendered after a location is set.//chat-->
+
+                      <div
+                        v-if="location.x && location.y" class="dot" v-bind:style="{ left: `${location.x}px`, top: `${location.y}px` }"> 
+                      </div>
+
+                    </div>
+                </div>
+
+        </section>
 
         <section id="part_button">
 
-                <!-- knapp för att placera order-->
-                <!-- byta ut type mot @click -->
+                <!-- button to place order-->
+                <!-- byta ut type mot v-on:click -->
 
-                <button @click="placeOrder">
+                <button v-on:click="placeOrder">
                   <img src="/img/placeraorder.jpeg" alt="Place Order" >
                 </button>
         </section>
     </main>
 
-    <!-- to separate footer from rest of the website, adds a horisontial line-->
-    <hr> 
+     <!-- to separate footer from rest of the website, adds a horisontial line-->
+     <hr> 
 
 
-    <footer>
-        <p> Copyright Hypothetical Burgers Inc 2024 </p>
-    </footer>
+<footer>
+    <p> Copyright Hypothetical Burgers Inc 2024 </p>
+</footer>
 
-
-
-<div>
-    <div>
-    <h1>Burgers</h1>
-
-
-      <!-- Loop through the burgers array and display each burger -->
-      <div v-for="burger in burgers" :key="burger.name">
-        <OneBurger :burger="burger" />    
-      </div>
-    </div>
-    <div id="map" v-on:click="addOrder">
-    click here
-    </div>
-</div>
 </template>
 
 <script>
@@ -136,11 +134,10 @@ const socket = io("localhost:3000");
 
     // Define burgers array
     const burgers = [  
-      new MenuItem("Hamburger", 600, true, true, false, "/img/burgermeat.jpg"),
-      new MenuItem("Chickenburger", 550, true, true, false, "/img/burgerchicken.jpg"),
-      new MenuItem("Halloumiburger", 450, true, true, true, "/img/burgerhalloumi.jpg"),
+      menu[0], 
+      menu[1], 
+      menu[2]
       ];
-
 
 
 //from code given
@@ -168,6 +165,11 @@ export default {
 
       },
 
+      // show location for click on map later
+      location: { 
+                  x: 0,
+                  y: 0
+                }
 
       };
     
@@ -182,14 +184,30 @@ export default {
 
     //This function is triggered when a user interacts with an element (like clicking a map or a button)
     addOrder: function (event) {
-      var offset = {x: event.currentTarget.getBoundingClientRect().left,
-                    y: event.currentTarget.getBoundingClientRect().top};
+
+      const mapRect = event.currentTarget.getBoundingClientRect();
+      const offsetX = event.clientX - mapRect.left;
+      const offsetY = event.clientY - mapRect.top;
+
+      //Update location with latest click
+      this.location = { x: offsetX, y: offsetY };
+
+      // Emit to the socket
       socket.emit("addOrder", { orderId: this.getOrderNumber(),
-                                details: { x: event.clientX - 10 - offset.x,
-                                           y: event.clientY - 10 - offset.y },
-                                orderItems: ["Beans", "Curry"]
+
+                                details: this.location, //Use updated location for the order
+
+                                orderItems: ["Beans", "Curry"] //Probably change
                               }
                  );
+    },
+
+
+    
+    //lyssnare
+    addToOrder: function() {
+      console.log("Är i addToOrder")
+      this.orderBurger[event.name]=event.amount
     },
 
     //Placing order, connected to place order button in templates
@@ -478,13 +496,30 @@ button:hover {
 }
 
 
-
-
-
-/* from code given */
+/* from code given, now with map backgrpund and added scrolling tool */
   #map {
-    width: 300px;
-    height: 300px;
+    position: relative;
+    width: 1920px;
+    height: 1078px;
     background-color: red;
+    background: url("/img/polacks.jpg");
+    overflow: hidden;
+
   }
+  #div_costumer_map {
+    overflow: scroll;
+  }
+
+/* styling for dots placed on map */
+
+  .dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: rgb(255, 94, 45);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
 </style>

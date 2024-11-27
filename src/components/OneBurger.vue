@@ -15,8 +15,8 @@
       <p> Amount: {{ amountOrdered }} </p>
 
       <!-- Buttons for changing amount of burgers -->
-      <button @click="increaseBurgers">+</button>
-      <button @click="decreaseBurgers" :disabled="amountOrdered <= 0">-</button>
+      <button v-on:click="increaseBurgers">+</button>
+      <button v-on:click="decreaseBurgers" :disabled="amountOrdered <= 0">-</button>
     
     </div>
 
@@ -41,26 +41,35 @@ export default {
   methods: {
 
   // Method to increase the burger amount
-  increaseBurgers() {
+  increaseBurgers: function() {
     this.amountOrdered++;
-  },
+    this.$emit('orderBurger', { name:   this.burger.name, 
+                                  amount: this.amountOrdered 
+                                });
+    },
 
   // Method to decrease the burger amount
-  decreaseBurgers() {
+  decreaseBurgers: function() {
     if (this.amountOrdered > 0) {
       this.amountOrdered--;
+      this.$emit('orderBurger', { name:   this.burger.name, 
+                                  amount: this.amountOrdered 
+                                });
+      }
     }
-  },
 
+/*
   // Optional: This can be used to handle an order event or submit the burger
-  orderBurger(burger) {
+  orderBurger: function(burger) {
     console.log('Burger ordered:', burger);
     alert('Order placed for: ' + burger.name + ' Quantity: ' + this.amountOrdered);
-  }
+    }
+*/
 
   }
-
 }
+
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

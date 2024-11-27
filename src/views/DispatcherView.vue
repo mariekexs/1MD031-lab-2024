@@ -6,6 +6,8 @@
         </div>
         <button v-on:click="clearQueue">Clear Queue</button>
       </div>
+      
+      <!--Displaying messages-->
       <div id="dots">
           <div v-for="(order, key) in orders" v-bind:style="{ left: order.details.x + 'px', top: order.details.y + 'px'}" v-bind:key="'dots' + key">
             {{ key }}
@@ -13,10 +15,15 @@
       </div>
     </div>
   </template>
+
+
+
   <script>
   import io from 'socket.io-client'
   const socket = io("localhost:3000");
   
+
+  //Receiving messages
   export default {
     name: 'DispatcherView',
     data: function () {
