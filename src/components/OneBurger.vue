@@ -34,8 +34,8 @@ export default {
 
   data: function () {
   return {
-    amountOrdered: 0, // Track the amount of burgers ordered
-    }
+    amountOrdered: this.burger.amount || 0, // Track the amount of burgers ordered, defaulted to 0 (förut 0 bara, uppdaterad 30/11)
+    };
   },
 
   methods: {
@@ -44,7 +44,7 @@ export default {
   increaseBurgers: function() {
     this.amountOrdered++;
     this.$emit('orderBurger', { name:   this.burger.name, 
-                                  amount: this.amountOrdered 
+                                amount: this.amountOrdered 
                                 });
     },
 
@@ -57,15 +57,6 @@ export default {
                                 });
       }
     }
-
-/*
-  // Optional: This can be used to handle an order event or submit the burger
-  orderBurger: function(burger) {
-    console.log('Burger ordered:', burger);
-    alert('Order placed for: ' + burger.name + ' Quantity: ' + this.amountOrdered);
-    }
-*/
-
   }
 }
 

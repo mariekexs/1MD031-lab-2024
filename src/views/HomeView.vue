@@ -21,14 +21,17 @@
                         <Burger v-for="burger in burgers" 
                                 v-bind:key="burger.name" 
                                 v-bind:burger="burger" 
-                                v-on:orderBurger="addToOrder($event)" />
+                                v-on:orderBurger="addToOrder" />
+                                <!-- orderBurger comes from OneBurger -->
+
+                                <!-- v-on:orderBurger="addToOrder($event)" -->
                     </div>
             </section>
 
-        <section id="part_costumerinformation"> 
+        <section id="part_customerinformation"> 
             
-            <div id="div_costumerinformation">
-                <h2> Costumerinformation: </h2>
+            <div id="div_customerinformation">
+                <h2> Customerinformation: </h2>
                     <p> Fill in your paymentinformation below.  </p>
 
 
@@ -42,15 +45,6 @@
                         <p>
                             <label for="email">Email:</label><br>
                             <input type="email" id="email" v-model="customerInfo.email" required="required" placeholder="E-mail address">
-                        </p>
-
-                        <p>
-                            <label for="adress">Adress:</label><br>
-                            <input type="text" id="adress" v-model="customerInfo.adress" placeholder="Streetname">
-                        </p>
-
-                        <p>
-                            <input type="number" id="number" v-model="customerInfo.housenumber" required="required" placeholder="Housenumber">
                         </p>
 
                         <p>
@@ -77,14 +71,17 @@
                 </div>
 
                 <!-- map of city for placing orders -->
-                <div id="div_costumer_map">
-                    <div id="map" v-on:click="addOrder">
+                <div id="div_customer_map">
+                    <div id="map" v-on:click="setLocation">
                       
                <!-- The v-if="location.x && location.y" ensures the dot is only rendered after a location is set.//chat-->
 
                       <div
                         v-if="location.x && location.y" class="dot" v-bind:style="{ left: `${location.x}px`, top: `${location.y}px` }"> 
                       </div>
+                      <p v-if="location.x && location.y" class="location-label">
+                        Location set at ({{ location.x }}, {{ location.y }})
+                      </p>
 
                     </div>
                 </div>
@@ -112,6 +109,10 @@
 
 </template>
 
+
+
+
+
 <script>
 
 import Burger from '../components/OneBurger.vue'
@@ -121,6 +122,8 @@ import io from 'socket.io-client'
 
 const socket = io("localhost:3000");
 
+
+/*
     // Constructor function for MenuItem - NOT USED ANYMORE (menu.json instead), BUT KEEP
       function MenuItem(name, kCal, glutenfree, lactosefree, vegetarian, imageUrl) {
         this.name = name;
@@ -130,7 +133,7 @@ const socket = io("localhost:3000");
         this.vegetarian = vegetarian;
         this.imageUrl = imageUrl;
       }
-
+*/
 
     // Define burgers array
     const burgers = [  
@@ -152,26 +155,28 @@ export default {
     console.log("Burger array:", burgers);
 
     return {
-      burgers: menu, // Use the array from json.menu, load all burgers
+      burgers: menu.map(burger => ({ ...burger, amount: 0 })), // Use the array from json.menu, load all burgers //burgers and amount of burgers sent
 
       //default values now
       customerInfo: {
-        name: "",
-        email: "",
-        adress: "",
-        housenumber: "",
+        name: " ",
+        email: " ",
         paymentOpt: "Bank Card",
         sex: "wontsay",
-
       },
 
       // show location for click on map later
       location: { 
                   x: 0,
                   y: 0
-                }
+                },
 
+      orderBurger: {},
+      
+      //orderItems: [] // Initialize as an empty array //tillagd 28/11
       };
+
+
     
   },
 
@@ -182,9 +187,88 @@ export default {
       return Math.floor(Math.random()*100000);
     },
 
-    //This function is triggered when a user interacts with an element (like clicking a map or a button)
-    addOrder: function (event) {
+    
+    //lyssnare
+    addToOrder: function(order) {
+      
+      console.log("Är i addToOrder")
+      this.orderBurger[event.name]=event.amount
+      
+      /*
+      // Handle the burger order (name and amount)
+      const { name, amount } = order;
+      
+      // Find the burger in the list and update its amount
+      const burgerIndex = this.burgers.findIndex(burger => burger.name === name);
+      if (burgerIndex !== -1) {
+        this.burgers[burgerIndex].amount = amount;
+        console.log(`Burger ordered: ${name}, Quantity: ${amount}`);
+      } else {
+        console.error('Burger not found:', name);
+      }
+*/
 
+    },
+
+    //Placing order, connected to place order button in templates
+
+    placeOrder: function() {
+      
+      console.log("Place Order button clicked!");
+
+      const orderItemsBurgers = this.burgers
+      const orderIdBurgers = this.getOrderNumber()
+
+      //make sure there are burgers chosen before the order is sent
+      if (orderItemsBurgers.length === 0) {
+        alert("Please select at least one burger before placing the order.");
+        return;
+      }
+      
+      // emit order - socket and console log
+      console.log("Order is placed");
+     
+      socket.emit("placeOrder", { orderId: orderIdBurgers,
+
+                                  details: {  
+                                    x: this.location.x, 
+                                    y: this.location.y,  //Use updated location for the order
+
+                                    name: this.customerInfo.name,
+                                    email: this.customerInfo.email,
+                                    payOpt: this.customerInfo.paymentOpt,
+
+                                    orderItems: {
+                                      amount: this.bugers.amount,
+                                      name: this.burgers.name
+                                    } 
+                                  },
+                                }  
+      );
+
+      //Feedback to user when order is placed
+      alert(`Your order is placed! Your order ID is ${orderIdBurgers}`);
+
+      //reset webpage when order is placed
+      this.resetCostumerData();
+      this.burgers.amount = 0,
+      this.location = { x: 0, y: 0 }; // Reset location
+    },
+
+    //reset costumer data
+    resetCostumerData: function() {
+
+      // Reset the customer information values
+      this.customerInfo.name = "";
+      this.customerInfo.email = "";
+      this.customerInfo.paymentOpt = "Bank Card";
+      this.customerInfo.sex = "wontsay";
+    
+    },
+
+    //set dot on  map
+    setLocation: function(event) {
+    
       const mapRect = event.currentTarget.getBoundingClientRect();
       const offsetX = event.clientX - mapRect.left;
       const offsetY = event.clientY - mapRect.top;
@@ -192,61 +276,12 @@ export default {
       //Update location with latest click
       this.location = { x: offsetX, y: offsetY };
 
-      // Emit to the socket
-      socket.emit("addOrder", { orderId: this.getOrderNumber(),
-
-                                details: this.location, //Use updated location for the order
-
-                                orderItems: ["Beans", "Curry"] //Probably change
-                              }
-                 );
-    },
-
-
-    
-    //lyssnare
-    addToOrder: function() {
-      console.log("Är i addToOrder")
-      this.orderBurger[event.name]=event.amount
-    },
-
-    //Placing order, connected to place order button in templates
-
-    placeOrder: function() {
-      
-      const orderData = {
-
-        orderID: this.getOrderNumber(),
-        orderItems: this.burgers.map (burger => burger.name),
-        customer: this.customerInfo,
-
-      };
-      
-      // Emit order data via socket or console log (as a placeholder)
-      console.log("Order placed:", orderData);
-      socket.emit("placeOrder", orderData);
-
-      //Feedback to user
-      alert(`Your order is placed! Your order ID is ${orderData.orderId}`);
-
-      this.resetCostumerData();
-
-    },
-
-      resetCostumerData() {
-
-      // Reset the costumer information values
-      this.customerInfo.name = "";
-      this.customerInfo.email = "";
-      this.customerInfo.adress = "";
-      this.customerInfo.housenumber = "";
-      this.customerInfo.paymentOpt = "Bank Card";
-      this.customerInfo.sex = "wontsay";
-    
+      // Debugging too see if location is set 
+      console.log("Location set:", this.location);
     }
-
-
   }
+
+  
 }
 </script>
 
@@ -341,7 +376,7 @@ section {
 }
 
 
-#part_costumerinformation {
+#part_customerinformation {
     padding: 40px 80px; /* Adds space inside rectangle */
     border: 4px double #d05111; /* Adds a border to better see the padding */
     border-radius: 30px; /* Rounds the corners of border for a softer look */
@@ -379,16 +414,16 @@ section {
     }
 
 
-/* set backround and text color for costumer infromation */
+/* set backround and text color for customer infromation */
 
-#part_costumerinformation {
+#part_customerinformation {
     color: #ffefcc;
     background-color: #632100;
 
 }
 
 
-#div_costumerinformation {
+#div_customerinformation {
     margin: 10px;
 }
 
@@ -444,13 +479,13 @@ section {
     width: 100%; /* Makes it span the full width of the box */
 }
 
-/* MIDDLE SECTION - COSTUMER INFORMATION */
+/* MIDDLE SECTION - CUSTOMER INFORMATION */
 
 
 /* Change size of textboexes to be filled in */
-#div_costumerinformation input[type="text"],
-#div_costumerinformation input[type="email"],
-#div_costumerinformation input[type="number"] {
+#div_customerinformation input[type="text"],
+#div_customerinformation input[type="email"],
+#div_customerinformation input[type="number"] {
     width: 250px;    /* Adjust width as desired */
     height: 15px;    /* Adjust height as desired */
     padding: 8px;   /* Add padding, gives a larger feel */
@@ -506,7 +541,7 @@ button:hover {
     overflow: hidden;
 
   }
-  #div_costumer_map {
+  #div_customer_map {
     overflow: scroll;
   }
 
