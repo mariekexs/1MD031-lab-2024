@@ -10,9 +10,9 @@
 
     <main>
         <section class="ingredient" id="part_orderburger"> 
-            <h2> Choose your burger: </h2>
+            <h2 id="chose_burger_text_part_orderburger"> Choose your burger </h2>
 
-                <p> Burger options: </p>
+                <p id="options_text_part_orderburger"> Burger options: </p>
 
                     <div class="wrapper" id="div_allburgers" >      <!-- div wrapper with under div to make grid layout-->
                         
@@ -74,7 +74,7 @@
                 <div id="div_customer_map">
                     <div id="map" v-on:click="setLocation">
                       
-               <!-- The v-if="location.x && location.y" ensures the dot is only rendered after a location is set.//chat-->
+               <!-- The v-if="location.x && location.y" ensures the dot is only rendered after a location is set.-->
 
                       <div
                         v-if="location.x && location.y" class="dot" v-bind:style="{ left: `${location.x}px`, top: `${location.y}px` }"> 
@@ -93,7 +93,7 @@
                 <!-- button to place order-->
                 <!-- byta ut type mot v-on:click -->
 
-                <button v-on:click="placeOrder">
+                <button v-on:click="addOrder">
                   <img src="/img/placeraorder.jpeg" alt="Place Order" >
                 </button>
         </section>
@@ -137,13 +137,12 @@ const socket = io("localhost:3000");
 
     // Define burgers array
     const burgers = [  
-      menu[0], 
-      menu[1], 
-      menu[2]
+      menu[0], //hamburger in menu
+      menu[1], //chickenburger in menu
+      menu[2] //halloumiburger in menu
       ];
 
 
-//from code given
 
 export default {
   name: 'HomeView',
@@ -157,10 +156,13 @@ export default {
     return {
       burgers: menu.map(burger => ({ ...burger, amount: 0 })), // Use the array from json.menu, load all burgers //burgers and amount of burgers sent
 
+
+      //burgers: [],
+
       //default values now
       customerInfo: {
-        name: " ",
-        email: " ",
+        name: "",
+        email: "",
         paymentOpt: "Bank Card",
         sex: "wontsay",
       },
@@ -187,37 +189,28 @@ export default {
       return Math.floor(Math.random()*100000);
     },
 
+
     
     //lyssnare
-    addToOrder: function(order) {
-      
-      console.log("Är i addToOrder")
+    addToOrder: function(event) {
+
+      console.log("update burger amount in add to order")
       this.orderBurger[event.name]=event.amount
-      
-      /*
-      // Handle the burger order (name and amount)
-      const { name, amount } = order;
-      
-      // Find the burger in the list and update its amount
-      const burgerIndex = this.burgers.findIndex(burger => burger.name === name);
-      if (burgerIndex !== -1) {
-        this.burgers[burgerIndex].amount = amount;
-        console.log(`Burger ordered: ${name}, Quantity: ${amount}`);
-      } else {
-        console.error('Burger not found:', name);
-      }
-*/
+      console.log(this.orderBurger[event.name]=event.amount) //print amount of clicked object
+  
 
     },
 
     //Placing order, connected to place order button in templates
 
-    placeOrder: function() {
+    addOrder: function() {
       
       console.log("Place Order button clicked!");
 
-      const orderItemsBurgers = this.burgers
-      const orderIdBurgers = this.getOrderNumber()
+      const orderItemsBurgers = this.orderBurger;
+      const orderIdBurgers = this.getOrderNumber();
+
+      console.log(orderItemsBurgers); //print order objects in cnsole
 
       //make sure there are burgers chosen before the order is sent
       if (orderItemsBurgers.length === 0) {
@@ -228,7 +221,7 @@ export default {
       // emit order - socket and console log
       console.log("Order is placed");
      
-      socket.emit("placeOrder", { orderId: orderIdBurgers,
+      socket.emit("addOrder", { orderId: orderIdBurgers,
 
                                   details: {  
                                     x: this.location.x, 
@@ -236,13 +229,10 @@ export default {
 
                                     name: this.customerInfo.name,
                                     email: this.customerInfo.email,
-                                    payOpt: this.customerInfo.paymentOpt,
-
-                                    orderItems: {
-                                      amount: this.bugers.amount,
-                                      name: this.burgers.name
-                                    } 
+                                    payOpt: this.customerInfo.paymentOpt
                                   },
+
+                                  orderItems: this.orderBurger,
                                 }  
       );
 
@@ -250,9 +240,19 @@ export default {
       alert(`Your order is placed! Your order ID is ${orderIdBurgers}`);
 
       //reset webpage when order is placed
-      this.resetCostumerData();
-      this.burgers.amount = 0,
+
+      // Reset all burger amounts to 0
+      this.burgers.forEach(burger => {
+        burger.amount = 0; // Reset amount for each burger
+      });
+
+    // Reset the orderBurger object to empty
+      this.orderBurger = {};
+
+      this.resetCostumerData(); //reset costumer data fill in
       this.location = { x: 0, y: 0 }; // Reset location
+
+      console.log("Burgers after reset:", this.orderBurger);
     },
 
     //reset costumer data
@@ -360,7 +360,6 @@ body {
 
 
 
-
 /* STYLING SECTIONS */
 
 /* set margin for every type scetion */
@@ -369,12 +368,22 @@ section {
 }
 
 #part_orderburger {
-    padding: 20px; /* Adds space inside each burger option */
+    padding: 30px; /* Adds space inside each burger option */
     border: 2px dotted #a33600;
     border-radius: 30px; /* Rounds the corners of border for a softer look */
     border-width: 15px;
+    text-align: center; /* Centers the text */
+
 }
 
+#chose_burger_text_part_orderburger {
+    margin: 0 auto; /* Ensures it’s aligned horizontally in the container */
+    font-size: 28pt; /* Adjust font size as needed */
+}
+
+#options_text_part_orderburger {
+  font-size: 20pt;
+}
 
 #part_customerinformation {
     padding: 40px 80px; /* Adds space inside rectangle */
@@ -387,32 +396,7 @@ section {
 
 /* FIRST SECTION - BURGER OPTIONS */
 
-/* Ingredient size, type and color */
-
- .ingredient {
-    color: #632100; /* Is set in box layout aswell, choose one*/
- }
-
- .headline_options {
-        font-size: 20pt;
- }
- 
-    #glutenfri {
-        font-weight: bold;
-        color: #d9520f;
-        font-size: 12 pt;
-    }
-    #mjolkfri {
-        font-weight: bold;
-        color: #d9520f;
-        font-size: 12 pt;
-    }
-    #vegetarisk {
-        font-weight: bold;
-        color: #008b15;
-        font-size: 12 pt;
-    }
-
+/* now styled in oneburger mostly*/
 
 /* set backround and text color for customer infromation */
 
@@ -434,11 +418,26 @@ section {
 
 .wrapper {   
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr); /* Default to 3 columns */
     grid-gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+
+}
+
+
+/* Responsive layout for smaller screens */
+@media (max-width: 1200px) {
+    .wrapper {
+        grid-template-columns: repeat(2, 1fr); /* For medium screens, show 2 columns */
+    }
+}
+
+@media (max-width: 800px) {
+    .wrapper {
+        grid-template-columns: 1fr; /* For smaller screens, show 1 column */
+    }
 }
 
 /* Styling for each burger */

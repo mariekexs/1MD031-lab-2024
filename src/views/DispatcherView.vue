@@ -1,33 +1,26 @@
 <template>
     <div id="orders">
-      <div id="orderList">
 
-        <!-- Display a loading message if orders are not loaded yet -->
-        <div v-if="!orders">Loading orders...</div>
-
-
-        <!-- Only show the order list if orders exist -->
-        <div v-else id="orderList">
-          <!-- <div v-for="([key, order]) in Object.entries(orders)" :key="'order' + key">-->
+        <div v-if="orders" id="orderList">
           
-            <div v-for="(order, key) in orders" v-bind:key="'order'+key">
+
+          <div v-for="(order, key) in orders" v-bind:key="'order'+key">
               
               <h3>Order #{{ key }}</h3>
+              <p> Order items: {{ order.orderItems }}</p> <br>
+
+              <p> Costumer: {{ order.details.name }}</p>
+              <p> Email: {{ order.details.email }}</p>
+              <p> Payment option: {{ order.details.payOpt }}</p>
               
-              <p v-if="item?.name">{{ item.name }}</p>
-              <p v-else>Name is not available</p>
-
-             <!--  <p> Costumer: {{ order.details.name }}</p>-->
-              <p> Email: {{ order.details?.email }}</p>
-              <p> Payment option: {{ order.details?.payOpt }}</p>
-
-              <p> {{ order.orderItems?.name }} + {{ order.orderItems?.amount }}  </p>
-
               <hr>
             </div>
 
               <button v-on:click="clearQueue">Clear Queue</button>
+
         </div>
+
+        <div v-else> Loading orders... </div>
 
       <!--Displaying messages-->
       <div id="dots">
@@ -37,7 +30,6 @@
       </div>
     
     </div>
-  </div>
 
   </template>
 
@@ -52,12 +44,7 @@
   export default {
     name: 'DispatcherView',
 
-    props: {
-    dataFromHome: {
-      type: Object, // Adjust type based on what you're passing (Object, Array, etc.)
-      required: true,
-     },
-    },
+
 
 
     data: function () {
@@ -67,10 +54,13 @@
     },
 
 
-
     created: function () {
       socket.on('currentQueue', data => {
       console.log(data);  // Log the structure of the data to debug
+      
+      console.log(this.orders);
+
+
       this.orders = data.orders;
   });
     },

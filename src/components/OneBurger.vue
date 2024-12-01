@@ -5,10 +5,14 @@
         <!-- Display image -->
     <img :src="burger.imageUrl" :alt="burger.name" />
 
-    <p>Calories: {{ burger.kCal }} kcal</p>
-    <p>Lactose Free: {{ burger.lactosefree ? 'Yes' : 'No' }}</p>
-    <p>Gluten Free: {{ burger.glutenfree ? 'Yes' : 'No' }}</p>
-    <p>Vegetarian: {{ burger.vegetarian ? 'Yes' : 'No' }}</p>
+    <div clas="ingredient">
+        <ul>
+           <li v-if="burger.vegetarian"> <span id="vegetarisk"> Vegetarian </span></li>
+            <li v-if="burger.lactosefree"> Contains <span id="mjolkfri">lactose</span></li>
+            <li v-if="burger.glutenfree">Contains <span id="glutenfri">gluten</span></li>
+            <li> Calories: {{ burger.kCal }} kcal </li> 
+        </ul>
+     </div>
 
     <div class="amount-container">
 
@@ -19,7 +23,6 @@
       <button v-on:click="decreaseBurgers" :disabled="amountOrdered <= 0">-</button>
     
     </div>
-
   </div>
 </template>
 
@@ -66,6 +69,31 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+/* Ingredient size, type and color */
+
+.ingredient {
+    color: #632100; /* Is set in box layout aswell, choose one*/
+ }
+
+ .headline_options {
+        font-size: 20pt;
+ }
+ 
+    #glutenfri {
+        font-weight: bold;
+        color: #d9520f;
+        font-size: 12 pt;
+    }
+    #mjolkfri {
+        font-weight: bold;
+        color: #d9520f;
+        font-size: 12 pt;
+    }
+    #vegetarisk {
+        font-weight: bold;
+        color: #008b15;
+        font-size: 12 pt;
+    }
 
 
 .burger-item {
