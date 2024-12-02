@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html lang="en">
+   <head>
+       <title>Burger Online ordering</title>
+       <meta charset="utf-8"/>
+
+
+        <link rel="stylesheet" type="text/css" href="/Users/mariekexs/Documents/GranssnittLAB1/1MD031-lab-2024/public/css/style.css">       
+
+   </head>
+   <body>
+        <header id="part_welcomeburgeronline">
+            <h1>Welcome to BurgerHeavenOnline</h1>
+            <p> You can order from options below! </p>
+        </header>
+
+
+
+    <main>
+        <section class="ingredient" id="part_orderburger"> 
+            <h2> Choose your burger: </h2>
+
+                <p> Burger options: </p>
+
+                    <div class="wrapper" id="div_allburgers" >      <!-- div wrapper with under div to make grid layout-->
+
+                        <!-- Each burger item -->
+                        <div class="box meat" id="div_meat">
+                            <h4 class="headline_options"> Hamburger </h4>
+                            <img src="/img/burgermeat.jpg" alt="Burger Meat" title="Hamburgare">
+                            <ul>
+                                <li>Possible to have <span class="option" id="mjolkfri">diaryfree</span></li>
+                                <li>Possible to have <span class="option" id="glutenfri">glutenfree</span></li>
+                                 <!-- HItta hur få om blanksteg utan punkten innnan -->
+                            </ul>
+                        </div>
+
+                        <div class="box chicken" id="div_chicken">
+                            <h4 class="headline_options"> Chickenburger </h4>
+                            <img src="/img/burgerchicken.jpg" alt="Burger Chicken" title="Kycklingburgare">
+                            <ul>
+                                <li>Possible to have <span class="option" id="mjolkfri">diaryfree</span></li>
+                                <li>Possible to have <span class="option" id="glutenfri">glutenfree</span></li>
+                                
+                            </ul>
+                        </div>
+
+                        <div class="box halloumi" id="div_halloumi">
+                            <h4 class="headline_options"> Halloumiburger </h4>
+                            <img src="/img/burgerhalloumi.jpg" alt="Burger Halloumi" title="Halloumiburgare">
+
+                            <ul>
+                                <li> <span class="option" id="vegetarisk"> Vegetarian </span> </li>
+                                <li>Possible to have <span class="option" id="mjolkfri"> diaryfree </span></li>
+                                <li>Possible to have <span class="option" id="glutenfri"> glutenfree </span> </li>
+                            </ul>
+                        </div>
+                    </div>
+
+        </section> 
+        <section id="part_costumerinformation"> 
+            
+            <div id="div_costumerinformation">
+                <h2> Costumerinformation: </h2>
+                    <p> Fill in your paymentinformation below.  </p>
+
+
+                    <h3> Delivery information: </h3>
+
+                        <p>
+                            <label for="namn">Name:</label><br>
+                            <input type="text" id="namn" name="fn" required="required" placeholder="First- and lastname">
+                        </p>
+                    
+                        <p>
+                            <label for="email">Email:</label><br>
+                            <input type="email" id="email" name="em" required="required" placeholder="E-mail address">
+                        </p>
+
+                        <p>
+                            <label for="adress">Adress:</label><br>
+                            <input type="text" id="adress" name="ad" placeholder="Streetname">
+                        </p>
+
+                        <p>
+                            <input type="number" id="number" name="nu" required="required" placeholder="Housenumber">
+                        </p>
+
+                        <!-- textruta att fylla i -->
+                        <p>
+                            <label for="recipient">Choose payment option:</label><br>
+                            <select id="recipient" name="rcp">
+                                <option>Swish</option>
+                                <option selected="selected" > Bank Card  </option>
+                                <option>Invoice</option>
+                                <option>At pick-up</option>
+                            </select>
+                        </p>
+
+                        <p> Choose your sex: </p> 
+                        <!-- Ge valalternativ ja nej att kryssa i -->
+                        <label>
+                            <input type="radio" name="offer" value="yes" > Yes
+                        </label> <br>
+                        <label>
+                            <input type="radio" name="offer" value="no"> No
+                        </label>
+                        <label> <br>
+                            <input type="radio" name="offer" value="wontsay" checked="checked"> Do not wish to provide
+                        </label>
+                        
+
+                </div>
+        </section>
+
+
+        <section id="part_button">
+
+                <!-- knapp för att placera order-->
+                <button type="submit">
+                    <img src="/img/placeraorder.jpeg">
+                  </button>
+
+
+        </section>
+    </main>
+
+    <!-- to separate footer from rest of the website, adds a horisontial line-->
+    <hr> 
+
+
+    <footer>
+        <p> Copyright Hypothetical Burgers Inc 2024 </p>
+    </footer>
+
+   </body>
+</html>
+
+<!-- Your comment goes here -->
