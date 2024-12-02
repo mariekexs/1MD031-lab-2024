@@ -14,7 +14,7 @@
 
                 <p id="options_text_part_orderburger"> Burger options: </p>
 
-                    <div class="wrapper" id="div_allburgers" >      <!-- div wrapper with under div to make grid layout-->
+                    <div class="wrapper" id="div_allburgers" >      <!-- div wrapper to make grid layout-->
                         
                         <!-- Loop through the burgers array and pass each burger to the Burger component, updated for OneBurger -->
                       
@@ -23,8 +23,6 @@
                                 v-bind:burger="burger" 
                                 v-on:orderBurger="addToOrder" />
                                 <!-- orderBurger comes from OneBurger -->
-
-                                <!-- v-on:orderBurger="addToOrder($event)" -->
                     </div>
             </section>
 
@@ -91,8 +89,6 @@
         <section id="part_button">
 
                 <!-- button to place order-->
-                <!-- byta ut type mot v-on:click -->
-
                 <button v-on:click="addOrder">
                   <img src="/img/placeraorder.jpeg" alt="Place Order" >
                 </button>
@@ -150,14 +146,10 @@ export default {
     Burger
   },
   data: function () {
-
     console.log("Burger array:", burgers);
 
     return {
       burgers: menu.map(burger => ({ ...burger, amount: 0 })), // Use the array from json.menu, load all burgers //burgers and amount of burgers sent
-
-
-      //burgers: [],
 
       //default values now
       customerInfo: {
@@ -173,36 +165,24 @@ export default {
                   y: 0
                 },
 
-      orderBurger: {},
-      
-      //orderItems: [] // Initialize as an empty array //tillagd 28/11
-      };
-
-
-    
+      orderBurger: {},  //orderedBurgers variable but not name as in instructions...
+    };
   },
 
   methods: {
-
     // Generates a radom 5-digit order number
     getOrderNumber: function () {
       return Math.floor(Math.random()*100000);
     },
-
-
     
     //lyssnare
     addToOrder: function(event) {
-
       console.log("update burger amount in add to order")
       this.orderBurger[event.name]=event.amount
       console.log(this.orderBurger[event.name]=event.amount) //print amount of clicked object
-  
-
     },
 
-    //Placing order, connected to place order button in templates
-
+    //addOrder function to place order, connected to place order button in templates
     addOrder: function() {
       
       console.log("Place Order button clicked!");
@@ -239,16 +219,7 @@ export default {
       //Feedback to user when order is placed
       alert(`Your order is placed! Your order ID is ${orderIdBurgers}`);
 
-      //reset webpage when order is placed
-
-      // Reset all burger amounts to 0
-      this.burgers.forEach(burger => {
-        burger.amount = 0; // Reset amount for each burger
-      });
-
-    // Reset the orderBurger object to empty
-      this.orderBurger = {};
-
+      //reset webpage when order is placed - everything but the buttons for every burger and the burgers chosen (don't manage to make it work)
       this.resetCostumerData(); //reset costumer data fill in
       this.location = { x: 0, y: 0 }; // Reset location
 
@@ -257,18 +228,15 @@ export default {
 
     //reset costumer data
     resetCostumerData: function() {
-
       // Reset the customer information values
       this.customerInfo.name = "";
       this.customerInfo.email = "";
       this.customerInfo.paymentOpt = "Bank Card";
       this.customerInfo.sex = "wontsay";
-    
     },
 
     //set dot on  map
     setLocation: function(event) {
-    
       const mapRect = event.currentTarget.getBoundingClientRect();
       const offsetX = event.clientX - mapRect.left;
       const offsetY = event.clientY - mapRect.top;
@@ -280,8 +248,6 @@ export default {
       console.log("Location set:", this.location);
     }
   }
-
-  
 }
 </script>
 
@@ -406,7 +372,6 @@ section {
 
 }
 
-
 #div_customerinformation {
     margin: 10px;
 }
@@ -452,6 +417,8 @@ section {
 }
 
 /* Styling for each image */
+
+/* set size */
 .box img {
     width: 230px;   
     height: 180px;

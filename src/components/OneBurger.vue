@@ -15,13 +15,10 @@
      </div>
 
     <div class="amount-container">
-
       <p> Amount: {{ amountOrdered }} </p>
-
       <!-- Buttons for changing amount of burgers -->
       <button v-on:click="increaseBurgers">+</button>
-      <button v-on:click="decreaseBurgers" :disabled="amountOrdered <= 0">-</button>
-    
+      <button v-on:click="decreaseBurgers" :disabled="amountOrdered <= 0">-</button>  
     </div>
   </div>
 </template>
@@ -33,8 +30,6 @@ export default {
     burger: Object
   },
 
-
-
   data: function () {
   return {
     amountOrdered: this.burger.amount || 0, // Track the amount of burgers ordered, defaulted to 0 (förut 0 bara, uppdaterad 30/11)
@@ -42,7 +37,6 @@ export default {
   },
 
   methods: {
-
   // Method to increase the burger amount
   increaseBurgers: function() {
     this.amountOrdered++;
@@ -62,15 +56,16 @@ export default {
     }
   }
 }
-
-
 </script>
+
+
+
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 /* Ingredient size, type and color */
-
 .ingredient {
     color: #632100; /* Is set in box layout aswell, choose one*/
  }
@@ -153,10 +148,6 @@ button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
-
-
-
-
 
 </style>
 

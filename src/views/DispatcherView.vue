@@ -2,10 +2,8 @@
     <div id="orders">
 
         <div v-if="orders" id="orderList">
-          
 
           <div v-for="(order, key) in orders" v-bind:key="'order'+key">
-              
               <h3>Order #{{ key }}</h3>
               <p> Order items: {{ order.orderItems }}</p> <br>
 
@@ -14,7 +12,7 @@
               <p> Payment option: {{ order.details.payOpt }}</p>
               
               <hr>
-            </div>
+          </div>
 
               <button v-on:click="clearQueue">Clear Queue</button>
 
@@ -57,9 +55,7 @@
     created: function () {
       socket.on('currentQueue', data => {
       console.log(data);  // Log the structure of the data to debug
-      
       console.log(this.orders);
-
 
       this.orders = data.orders;
   });
