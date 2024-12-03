@@ -120,6 +120,8 @@ const socket = io("localhost:3000");
 
 
 /*
+Not used anymore
+
     // Constructor function for MenuItem - NOT USED ANYMORE (menu.json instead), BUT KEEP
       function MenuItem(name, kCal, glutenfree, lactosefree, vegetarian, imageUrl) {
         this.name = name;
@@ -129,6 +131,11 @@ const socket = io("localhost:3000");
         this.vegetarian = vegetarian;
         this.imageUrl = imageUrl;
       }
+
+    const burgerMeat = new MenuItem ('Hamburger','600','Yes', 'Yes', 'No', '/img/burgermeat.jpg')
+    const burgerChicken = new MenuItem ('Chickenburger','550','Yes', 'Yes', 'No', '/img/burgerchicken.jpg')
+    const burgerHalloumi = new MenuItem ('Halloumiburger','450','Yes', 'Yes', 'Yes', '/img/burgerhalloumi.jpg')
+
 */
 
     // Define burgers array
